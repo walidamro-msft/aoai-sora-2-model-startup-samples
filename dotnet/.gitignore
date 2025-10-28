@@ -32,6 +32,14 @@ ENV/
 env.bak/
 venv.bak/
 
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.cache
+.vs/
+
 # IDE
 .vscode/
 .idea/
