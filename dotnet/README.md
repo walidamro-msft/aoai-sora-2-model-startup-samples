@@ -129,7 +129,7 @@ dotnet run --project Sora2DeleteGeneratedVideo -- video_6901017960dc8190a6f7a19c
 If you don't have .NET installed:
 
 1. Go to [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
-2. Download .NET 8.0 SDK or newer (recommended: .NET 8.0+)
+2. Download .NET 9.0 SDK or newer (recommended: .NET 9.0+)
 3. Complete the installation
 4. Restart your terminal/command prompt after installation
 
@@ -138,7 +138,7 @@ To verify .NET is installed, open your terminal and type:
 dotnet --version
 ```
 
-You should see something like `8.0.xxx` or `9.0.xxx`
+You should see something like `9.0.xxx`
 
 ### Step 2: Download This Project
 
@@ -435,12 +435,12 @@ Sora has a robust safety stack that includes content filtering, abuse monitoring
 ### Build Errors
 If you get compilation errors:
 - Make sure you ran `dotnet restore` to download all dependencies
-- Verify you're using .NET 8.0 or later
+- Verify you're using .NET 9.0 or later
 - Check that the Azure.AI.OpenAI package version 2.1.0-beta.2 was installed correctly
 
 ## 📝 Requirements Summary
 
-- **.NET SDK**: 8.0 or newer
+- **.NET SDK**: 9.0 or newer
 - **NuGet Packages**: 
   - `Azure.AI.OpenAI` (version 2.1.0-beta.2)
   - `OpenAI` (version 2.1.0-beta.2)

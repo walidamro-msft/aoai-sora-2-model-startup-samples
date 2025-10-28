@@ -6,7 +6,7 @@
  * failed, or cancelled.
  * 
  * Requirements:
- *     - .NET 8.0 or later
+ *     - .NET 9.0 or later
  *     - Valid Azure OpenAI API key and endpoint in .env file
  * 
  * Usage:

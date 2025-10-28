@@ -6,7 +6,7 @@
  * use this utility to retrieve and save the completed video file to your local system.
  * 
  * Requirements:
- *     - .NET 8.0 or later
+ *     - .NET 9.0 or later
  *     - Valid Azure OpenAI API key and endpoint
  * 
  * Usage:

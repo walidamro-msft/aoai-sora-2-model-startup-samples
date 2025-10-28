@@ -4,7 +4,7 @@
  * This application deletes a specific video from Azure OpenAI's Sora-2 model by video ID.
  * 
  * Requirements:
- *     - .NET 8.0 or later
+ *     - .NET 9.0 or later
  *     - Valid Azure OpenAI API key and endpoint in .env file
  * 
  * Usage:

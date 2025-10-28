@@ -6,7 +6,7 @@
  * based on your description, creating realistic and imaginative video content.
  * 
  * Requirements:
- *     - .NET 8.0 or later
+ *     - .NET 9.0 or later
  *     - Valid Azure OpenAI API key and endpoint
  *     - Reference image file (JPEG, PNG, or WebP format)
  * 
