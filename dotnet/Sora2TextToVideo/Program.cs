@@ -59,7 +59,7 @@ End frame (hold ~0.4s): The red panda sets the cup down, proud head tilt to came
 Safety & realism: Anatomically plausible proportions; stable footing; appropriate utensil sizes.";
 
 var size = "1280x720";
-var seconds = 4;
+var seconds = "4";
 
 Console.WriteLine("Sending video generation request to Azure OpenAI Sora-2...");
 Console.WriteLine($"Prompt: {prompt}");
@@ -73,6 +73,13 @@ try
     httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
 
     var baseUrl = $"https://{resourceName}.openai.azure.com/openai/v1";
+    
+    var jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        WriteIndented = false
+    };
+    
     var requestBody = new
     {
         model = "sora-2",
@@ -81,7 +88,13 @@ try
         seconds = seconds
     };
 
-    var response = await httpClient.PostAsJsonAsync($"{baseUrl}/videos", requestBody);
+    var requestContent = new StringContent(
+        JsonSerializer.Serialize(requestBody, jsonOptions),
+        System.Text.Encoding.UTF8,
+        "application/json"
+    );
+
+    var response = await httpClient.PostAsync($"{baseUrl}/videos", requestContent);
     response.EnsureSuccessStatusCode();
 
     var jsonResponse = await response.Content.ReadFromJsonAsync<JsonElement>();

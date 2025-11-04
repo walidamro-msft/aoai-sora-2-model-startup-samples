@@ -72,7 +72,7 @@ Ending frame: lead horse fully landed, mid-canter, suitable to loop with a subtl
 
 var imageFilename = "horses-1280x720.jpg";
 var size = "1280x720";
-var seconds = 8;
+var seconds = "8";
 
 // ============================================================================
 // Send Image-to-Video Generation Request
@@ -103,7 +103,17 @@ try
     // Add image file
     var imageBytes = await File.ReadAllBytesAsync(imageFilename);
     var imageContent = new ByteArrayContent(imageBytes);
-    imageContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+    
+    // Determine content type based on file extension
+    var extension = Path.GetExtension(imageFilename).ToLower();
+    var contentType = extension switch
+    {
+        ".jpg" or ".jpeg" => "image/jpeg",
+        ".png" => "image/png",
+        ".webp" => "image/webp",
+        _ => "image/jpeg"
+    };
+    imageContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
     formData.Add(imageContent, "input_reference", imageFilename);
     
     // Add other parameters

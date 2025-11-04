@@ -2,6 +2,8 @@
 
 This folder contains .NET samples demonstrating how to use Azure OpenAI's Sora-2 model to generate videos. Sora-2 is a state-of-the-art AI model that creates realistic and imaginative video content.
 
+> **✨ Recent Updates (November 2025):** The API endpoint structure and authentication have been verified to work with Azure OpenAI. The samples use the correct endpoint format (`/openai/v1/videos`) and proper JSON serialization with snake_case naming conventions.
+
 ## 📋 Available Samples
 
 ### Core Generation Projects
@@ -57,7 +59,7 @@ dotnet run --project Sora2VideoCreationStatus -- video_6901017960dc8190a6f7a19cd
 Retrieve a list of all your generated videos from Azure OpenAI's Sora-2 model.
 
 **Usage:**
-```bash
+```bashx
 dotnet run --project Sora2GetGeneratedVideos
 ```
 
@@ -151,15 +153,13 @@ You should see something like `9.0.xxx`
 
 ### Step 3: Restore NuGet Packages
 
-The projects use the Azure.AI.OpenAI NuGet package. Restore dependencies by running:
+The projects reference the Azure.AI.OpenAI NuGet package (though the samples use direct HTTP calls). Restore dependencies by running:
 
 ```bash
 dotnet restore
 ```
 
-This will download all required packages including:
-- **Azure.AI.OpenAI**: For working with Azure OpenAI API (version 2.1.0-beta.2)
-- **OpenAI**: Core OpenAI SDK with video features support
+This will download all required packages and dependencies.
 
 ### Step 4: Set Up Your Azure Credentials
 
@@ -199,7 +199,7 @@ This will download all required packages including:
 
 ### Step 5: Prepare Your Reference Image (Image-to-Video Only)
 
-**If you're using `Sora2ImageToVideo`**, you'll need a reference image to animate. By default, it looks for a file named `horses-1280x720.jpg` in the `dotnet` folder.
+**If you're using `Sora2ImageToVideo`**, you'll need a reference image to animate. A sample image `horses-1280x720.jpg` is included in the `Sora2ImageToVideo` project folder and will be automatically copied to the output directory when you build the project.
 
 **Important Requirements**:
 - The image must be in JPEG, PNG, or WebP format
@@ -207,10 +207,20 @@ This will download all required packages including:
 - Supported sizes: `720x1280`, `1280x720`, `1024x1792`, `1792x1024`
 
 **To use your own image**:
-1. Place your image in the `dotnet` folder
-2. Open `Sora2ImageToVideo/Program.cs` in a text editor
-3. Find the line that says `var imageFilename = "horses-1280x720.jpg";`
-4. Replace `horses-1280x720.jpg` with your image filename
+1. Place your image in the `Sora2ImageToVideo` folder (next to `Program.cs`)
+2. Update the `.csproj` file to include your image:
+   ```xml
+   <ItemGroup>
+     <None Update="your-image.jpg">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+   </ItemGroup>
+   ```
+3. Open `Sora2ImageToVideo/Program.cs` in a text editor
+4. Find the line that says `var imageFilename = "horses-1280x720.jpg";`
+5. Replace `horses-1280x720.jpg` with your image filename
+
+**Note:** The image will be automatically copied to the output directory (`bin/Debug/net9.0/`) when you build the project, so the program can find it at runtime.
 
 **If you're using `Sora2TextToVideo`**, you can skip this step as it doesn't require a reference image.
 
@@ -333,8 +343,8 @@ You can customize the video generation by editing the code in the respective Pro
 
 ```csharp
 var prompt = "Your detailed description here...";  // Describe what you want to see
-var size = VideoSize.W1280xH720;                   // Video resolution
-var seconds = VideoLength.FourSeconds;             // Video duration (4, 8, or 12)
+var size = "1280x720";                             // Video resolution
+var seconds = "4";                                 // Video duration as string: "4", "8", or "12"
 ```
 
 ### Image-to-Video Parameters (`Sora2ImageToVideo/Program.cs`)
@@ -342,24 +352,26 @@ var seconds = VideoLength.FourSeconds;             // Video duration (4, 8, or 1
 ```csharp
 var prompt = "Your detailed description here...";  // Describe the animation
 var imageFilename = "horses-1280x720.jpg";         // Reference image filename
-var size = VideoSize.W1280xH720;                   // Video resolution
-var seconds = VideoLength.EightSeconds;            // Video duration (4, 8, or 12)
+var size = "1280x720";                             // Video resolution
+var seconds = "8";                                 // Video duration as string: "4", "8", or "12"
 ```
 
 ### Available Video Sizes
 
-The `VideoSize` enum provides the following options:
-- `VideoSize.W720xH1280` - Portrait orientation (9:16 aspect ratio)
-- `VideoSize.W1280xH720` - Landscape orientation (16:9 aspect ratio)
-- `VideoSize.W1024xH1792` - Portrait orientation (taller format)
-- `VideoSize.W1792xH1024` - Landscape orientation (wider format)
+Choose one of the following size strings:
+- `"720x1280"` - Portrait orientation (9:16 aspect ratio)
+- `"1280x720"` - Landscape orientation (16:9 aspect ratio)
+- `"1024x1792"` - Portrait orientation (taller format)
+- `"1792x1024"` - Landscape orientation (wider format)
 
-### Available Video Lengths
+### Available Video Durations
 
-The `VideoLength` enum provides the following options:
-- `VideoLength.FourSeconds` - 4 seconds
-- `VideoLength.EightSeconds` - 8 seconds
-- `VideoLength.TwelveSeconds` - 12 seconds
+⚠️ **Important:** Duration must be a **string value**, not an integer.
+
+Choose one of the following duration strings:
+- `"4"` - 4 seconds
+- `"8"` - 8 seconds
+- `"12"` - 12 seconds
 
 ### Writing Good Prompts
 
@@ -417,9 +429,11 @@ Sora has a robust safety stack that includes content filtering, abuse monitoring
 
 ### "FileNotFoundException" for horses-1280x720.jpg
 - This error is specific to `Sora2ImageToVideo`
-- Make sure your reference image is in the `dotnet` folder
+- The sample image `horses-1280x720.jpg` should be automatically copied to the output directory when you build the project
+- If you still get this error, try rebuilding the project: `dotnet build Sora2ImageToVideo/Sora2ImageToVideo.csproj`
 - Check the filename matches exactly (including the extension)
-- Verify the code references the correct filename
+- Verify the image file exists in the `Sora2ImageToVideo` project folder
+- Make sure the `.csproj` file includes the `<None Update>` element for your image file
 
 ### "Error: 401" or "Error: 403"
 - Your API key may be incorrect
@@ -427,10 +441,25 @@ Sora has a robust safety stack that includes content filtering, abuse monitoring
 - You may not have access to Sora-2 on your subscription
 
 ### "Error: 400"
+- **Most common issue:** Make sure `seconds` is a **string** (e.g., `"4"`) not an integer (e.g., `4`)
+- **For Image-to-Video:** The multipart form field name must be `"input_reference"`, not `"image"`
 - Check that your image dimensions match the `size` parameter exactly (for Image-to-Video)
 - Verify your image is in a supported format: JPEG, PNG, WebP (for Image-to-Video)
 - Make sure your prompt and parameters are valid
-- Check that the video duration is one of the supported values: 4, 8, or 12 seconds
+- Check that the video duration is one of the supported string values: `"4"`, `"8"`, or `"12"`
+- Verify the `size` parameter uses one of the exact supported resolutions
+- **Important:** Input images with human faces are currently rejected by the API
+
+### "Error: 404" or "Not Found"
+- The Azure OpenAI endpoint should be: `https://{resourceName}.openai.azure.com/openai/v1/videos`
+- Verify your `AZURE_RESOURCE_NAME` is correct (e.g., `aoai-test-swedencentral-001`)
+- Check that the Sora-2 model is deployed in your Azure region
+
+### HTTP Request Failures or Timeouts
+- Video generation can take several minutes; use `Sora2VideoCreationStatus` to poll for completion
+- Ensure you're not hitting rate limits (max 2 concurrent video jobs)
+- Check your network connection and firewall settings
+- Verify the Azure OpenAI service is available in your region
 
 ### Build Errors
 If you get compilation errors:
@@ -438,12 +467,41 @@ If you get compilation errors:
 - Verify you're using .NET 9.0 or later
 - Check that the Azure.AI.OpenAI package version 2.1.0-beta.2 was installed correctly
 
+## 🔧 Technical Implementation Notes
+
+### API Endpoint Structure
+The samples use the Azure OpenAI REST API directly with `HttpClient`. Key implementation details:
+
+**Endpoint Format:**
+```
+https://{resourceName}.openai.azure.com/openai/v1/videos
+```
+
+**Authentication:**
+- Header: `api-key: {your-api-key}`
+- The samples use Azure OpenAI authentication (not OpenAI's `Authorization: Bearer` format)
+
+**JSON Serialization:**
+- Uses `System.Text.Json` with `JsonNamingPolicy.SnakeCaseLower` for proper snake_case conversion
+- This ensures API parameters like `created_at` are correctly formatted
+
+**Multipart Form Data (Image-to-Video):**
+- The image field name is `"input_reference"` (as per OpenAI Sora 2 API specification)
+- Supports JPEG, PNG, and WebP formats with automatic content-type detection
+- Image dimensions must exactly match the `size` parameter
+
+### Async Video Generation Flow
+1. **Create Request**: POST to `/videos` returns a job ID immediately
+2. **Poll Status**: GET `/videos/{id}` to check status (queued → processing → completed)
+3. **Download**: GET `/videos/{id}/content?variant=video` retrieves the final video
+4. **Cleanup**: DELETE `/videos/{id}` removes the video from Azure storage
+
 ## 📝 Requirements Summary
 
 - **.NET SDK**: 9.0 or newer
 - **NuGet Packages**: 
-  - `Azure.AI.OpenAI` (version 2.1.0-beta.2)
-  - `OpenAI` (version 2.1.0-beta.2)
+  - `Azure.AI.OpenAI` (version 2.1.0-beta.2) - Referenced but not required; samples use direct HTTP calls
+  - Standard .NET libraries: `System.Net.Http`, `System.Text.Json`
 - **Azure**: 
   - Azure OpenAI subscription
   - Access to Sora-2 model
@@ -451,6 +509,8 @@ If you get compilation errors:
 - **Reference Image** (for Image-to-Video only): 
   - JPEG, PNG, or WebP format
   - Dimensions matching the `size` parameter
+
+**Note:** These samples use direct `HttpClient` calls to the Azure OpenAI REST API rather than the SDK, providing more control and transparency over the API interactions.
 
 ## 📁 Files in This Folder
 

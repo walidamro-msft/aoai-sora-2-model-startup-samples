@@ -11,4 +11,10 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0-beta.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="horses-1280x720.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

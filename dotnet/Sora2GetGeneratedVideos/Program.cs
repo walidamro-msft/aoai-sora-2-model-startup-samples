@@ -47,7 +47,6 @@ httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
 
 var baseUrl = $"https://{resourceName}.openai.azure.com/openai/v1";
 
-Console.WriteLine("Retrieving generated videos from Azure OpenAI Sora-2...");
 Console.WriteLine(new string('=', 60));
 
 try
