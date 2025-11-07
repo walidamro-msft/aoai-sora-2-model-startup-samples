@@ -84,7 +84,7 @@ def download_video(video_id, output_file_path):
         )
     
     # Construct the base URL for Azure OpenAI
-    base_url = f"https://{resource_name}.openai.azure.com/openai/v1/"
+    base_url = f"https://{resource_name}/openai/v1/"
     
     # ============================================================================
     # Initialize OpenAI Client
@@ -100,6 +100,7 @@ def download_video(video_id, output_file_path):
     # ============================================================================
     print("-" * 60)
     print(f"Downloading video...")
+    print(f"  Endpoint URL: {base_url}videos/{video_id}/content")
     print(f"  Video ID: {video_id}")
     print(f"  Output Path: {output_file_path}")
     print("-" * 60)

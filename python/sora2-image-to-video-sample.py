@@ -44,9 +44,10 @@ if not api_key or not resource_name:
     )
 
 # Initialize OpenAI client for Azure
+base_url = f"https://{resource_name}/openai/v1/"
 client = OpenAI(
     api_key=api_key,
-    base_url=f"https://{resource_name}.openai.azure.com/openai/v1/",
+    base_url=base_url,
 )
 
 # ============================================================================
@@ -119,6 +120,7 @@ seconds = 8  # Video duration - 8 seconds
 # Open the reference image file and send it along with the parameters
 # The image will be used as the first frame of the generated video
 print("Sending image-to-video generation request to Azure OpenAI Sora-2...")
+print(f"Endpoint URL: {base_url}videos")
 print(f"Reference Image: {image_filename}")
 print(f"Duration: {seconds} seconds")
 print(f"Resolution: {size}")

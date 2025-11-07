@@ -35,9 +35,10 @@ if not api_key or not resource_name:
         "Please copy .env.sample to .env and populate with your values."
     )
 
+base_url = f"https://{resource_name}/openai/v1/"
 client = OpenAI(
     api_key=api_key,
-    base_url=f"https://{resource_name}.openai.azure.com/openai/v1/",
+    base_url=base_url,
 )
 
 # Video generation parameters
@@ -54,6 +55,7 @@ size = "1280x720"
 seconds = "4"
 
 print("Sending video generation request to Azure OpenAI Sora-2...")
+print(f"Endpoint URL: {base_url}videos")
 print(f"Prompt: {prompt}")
 print(f"Duration: {seconds} seconds")
 print(f"Resolution: {size}")

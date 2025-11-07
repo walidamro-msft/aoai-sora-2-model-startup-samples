@@ -43,12 +43,14 @@ def delete_video(video_id):
         sys.exit(1)
     
     # Initialize OpenAI client for Azure
+    base_url = f"https://{resource_name}/openai/v1/"
     client = OpenAI(
         api_key=api_key,
-        base_url=f"https://{resource_name}.openai.azure.com/openai/v1/",
+        base_url=base_url,
     )
     
     print(f"Deleting video: {video_id}")
+    print(f"Endpoint URL: {base_url}videos/{video_id}")
     print("=" * 60)
     
     try:

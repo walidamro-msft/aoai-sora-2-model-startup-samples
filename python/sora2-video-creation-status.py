@@ -46,10 +46,13 @@ def check_video_status(video_id):
         print("Error: AZURE_API_KEY and AZURE_RESOURCE_NAME must be set in .env file")
         sys.exit(1)
     
+    base_url = f"https://{resource_name}/openai/v1/"
     client = OpenAI(
         api_key=api_key,
-        base_url=f"https://{resource_name}.openai.azure.com/openai/v1/",
+        base_url=base_url,
     )
+    
+    print(f"Endpoint URL: {base_url}videos/{video_id}")
     
     # Retrieve initial video status
     video = client.videos.retrieve(video_id)

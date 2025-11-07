@@ -32,12 +32,15 @@ if not AZURE_API_KEY or not AZURE_RESOURCE_NAME:
     raise ValueError("Missing required environment variables. Please check your .env file.")
 
 # Initialize OpenAI client for Azure
+base_url = f"https://{AZURE_RESOURCE_NAME}/openai/v1/"
 client = OpenAI(
     api_key=AZURE_API_KEY,
-    base_url=f"https://{AZURE_RESOURCE_NAME}.openai.azure.com/openai/v1/",
+    base_url=base_url,
 )
 
 print("Retrieving generated videos from Azure OpenAI Sora-2...")
+print("=" * 60)
+print(f"\nEndpoint URL: {base_url}videos")
 print("=" * 60)
 
 try:

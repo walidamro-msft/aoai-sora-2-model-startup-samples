@@ -147,7 +147,7 @@ This installs:
 1. **Get Azure OpenAI Access**:
    - You need an Azure subscription with access to Azure OpenAI Service
    - You need access to the Sora-2 model specifically
-   - Get your API key and resource name from the Azure Portal
+   - Get your API key and resource name from the Azure Portal or AI Foundry
 
 2. **Create Your Configuration File**:
    - In the `python` folder, you'll find a file named `.env.sample`
@@ -167,11 +167,19 @@ This installs:
    AZURE_RESOURCE_NAME=your-actual-resource-name-here
    ```
 
-   **Example**:
+   **For Azure OpenAI Example**:
    ```
    AZURE_API_KEY=abc123def456ghi789jkl012mno345pqr678
-   AZURE_RESOURCE_NAME=aoai-test-swedencentral-001
+   AZURE_RESOURCE_NAME=aoai-test-swedencentral-001.openai.azure.com
    ```
+   
+   **For AI Foundry Example**:
+   ```
+   AZURE_API_KEY=abc123def456ghi789jkl012mno345pqr678
+   AZURE_RESOURCE_NAME=my-project.region.models.ai.azure.com
+   ```
+   
+   **Note**: The scripts automatically construct the appropriate endpoint URL and will display it when you run them, making it easy to verify that you're connecting to the correct service (AI Foundry or Azure OpenAI).
 
 ### Step 5: Prepare Your Reference Image (Image-to-Video Only)
 
@@ -207,6 +215,8 @@ python sora2-image-to-video-sample.py
 ## 🔄 How It Works
 
 Video generation is an asynchronous process. You create a job request with your text prompt and video format specifications, and the model processes the request in the background. You can check the status of the video generation job and, once it finishes, retrieve the generated video through a download URL.
+
+**Endpoint Visibility**: All scripts now display the full endpoint URL before making API calls, making it easy to verify connections to either Azure OpenAI or AI Foundry services.
 
 ### Complete Workflow Example
 
@@ -252,6 +262,7 @@ When you run either script, you'll see:
 **Example Output (Text-to-Video)**:
 ```
 Sending video generation request to Azure OpenAI Sora-2...
+Endpoint URL: https://aoai-test-swedencentral-001.openai.azure.com/openai/v1/videos
 Prompt: Create a 4‑second, photoreal cinematic shot. In a sunlit, minimalist café...
 Duration: 4 seconds
 Resolution: 1280x720
@@ -272,6 +283,7 @@ You can check the status using the video ID returned in the response.
 **Example Output (Image-to-Video)**:
 ```
 Sending image-to-video generation request to Azure OpenAI Sora-2...
+Endpoint URL: https://aoai-test-swedencentral-001.openai.azure.com/openai/v1/videos
 Reference Image: horses-1280x720.jpg
 Duration: 8 seconds
 Resolution: 1280x720
