@@ -59,7 +59,9 @@ if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(resourceName))
 using var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
 
-var baseUrl = $"https://{resourceName}.openai.azure.com/openai/v1";
+var baseUrl = $"https://{resourceName}/openai/v1";
+
+Console.WriteLine($"Endpoint URL: {baseUrl}/videos/{videoId}");
 
 // Retrieve initial video status
 var response = await httpClient.GetAsync($"{baseUrl}/videos/{videoId}");

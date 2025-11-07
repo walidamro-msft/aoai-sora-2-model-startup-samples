@@ -81,10 +81,11 @@ if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(resourceName))
 using var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
 
-var baseUrl = $"https://{resourceName}.openai.azure.com/openai/v1";
+var baseUrl = $"https://{resourceName}/openai/v1";
 
 Console.WriteLine(new string('-', 60));
 Console.WriteLine("Downloading video...");
+Console.WriteLine($"  Endpoint URL: {baseUrl}/videos/{videoId}/content");
 Console.WriteLine($"  Video ID: {videoId}");
 Console.WriteLine($"  Output Path: {outputFilePath}");
 Console.WriteLine(new string('-', 60));

@@ -191,11 +191,19 @@ This will download all required packages and dependencies.
    AZURE_RESOURCE_NAME=your-actual-resource-name-here
    ```
 
-   **Example**:
+   **For Azure OpenAI Example**:
    ```
    AZURE_API_KEY=abc123def456ghi789jkl012mno345pqr678
-   AZURE_RESOURCE_NAME=aoai-test-swedencentral-001
+   AZURE_RESOURCE_NAME=aoai-test-swedencentral-001.openai.azure.com
    ```
+   
+   **For AI Foundry Example**:
+   ```
+   AZURE_API_KEY=abc123def456ghi789jkl012mno345pqr678
+   AZURE_RESOURCE_NAME=my-project.region.models.ai.azure.com
+   ```
+   
+   **Note**: The applications automatically construct the appropriate endpoint URL and will display it when you run them, making it easy to verify that you're connecting to the correct service (AI Foundry or Azure OpenAI).
 
 ### Step 5: Prepare Your Reference Image (Image-to-Video Only)
 
@@ -250,6 +258,8 @@ dotnet run --project Sora2ImageToVideo
 
 Video generation is an asynchronous process. You create a job request with your text prompt and video format specifications, and the model processes the request in the background. You can check the status of the video generation job and, once it finishes, retrieve the generated video through a download.
 
+**Endpoint Visibility**: All applications now display the full endpoint URL before making API calls, making it easy to verify connections to either Azure OpenAI or AI Foundry services.
+
 ### Complete Workflow Example
 
 Here's a typical workflow for generating and managing videos:
@@ -301,6 +311,8 @@ Prompt: Create a 4-second, photoreal cinematic shot. In a sunlit, minimalist caf
 Duration: 4 seconds
 Resolution: 1280x720
 ------------------------------------------------------------
+Endpoint URL: https://aoai-test-swedencentral-001.openai.azure.com/openai/v1/videos
+------------------------------------------------------------
 
 ✓ Video generation started successfully!
 
@@ -321,6 +333,8 @@ Reference Image: horses-1280x720.jpg
 Duration: 8 seconds
 Resolution: 1280x720
 Prompt: Reference image: the uploaded photo of three chestnut horses cantering...
+------------------------------------------------------------
+Endpoint URL: https://aoai-test-swedencentral-001.openai.azure.com/openai/v1/videos
 ------------------------------------------------------------
 
 ✓ Video generation started successfully!

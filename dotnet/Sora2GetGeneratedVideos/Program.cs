@@ -45,8 +45,11 @@ if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(resourceName))
 using var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
 
-var baseUrl = $"https://{resourceName}.openai.azure.com/openai/v1";
+var baseUrl = $"https://{resourceName}/openai/v1";
 
+Console.WriteLine("Retrieving generated videos from Azure OpenAI Sora-2...");
+Console.WriteLine(new string('=', 60));
+Console.WriteLine($"Endpoint URL: {baseUrl}/videos");
 Console.WriteLine(new string('=', 60));
 
 try
