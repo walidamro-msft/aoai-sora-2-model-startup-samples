@@ -35,9 +35,10 @@ load_dotenv()
 # Load credentials from environment variables
 api_key = os.getenv("AZURE_API_KEY")
 resource_name = os.getenv("AZURE_RESOURCE_NAME")
+model_name = os.getenv("AZURE_MODEL_NAME")
 
 # Validate required environment variables
-if not api_key or not resource_name:
+if not api_key or not resource_name or not model_name:
     raise ValueError(
         "Missing required environment variables. "
         "Please copy .env.sample to .env and populate with your values."
@@ -97,18 +98,15 @@ client = OpenAI(
 #     - Image dimensions must exactly match the specified 'size' parameter
 #     - The first frame of the generated video will closely match this image
 
-prompt = '''Reference image: the uploaded photo of three chestnut horses cantering in shallow surf under an overcast sky (lead horse with a white blaze in the foreground, two horses trailing left-of-frame).
-Goal: generate a 4-second photorealistic clip where the lead horse performs a natural show-jumping motion over an imaginary fence—no object should appear—while the setting and other horses remain consistent with the still image.
-Action & timing:
-• 0-1 s - approach canter toward camera left→right; subtle water splashes.
-• 1-2 s - the lead horse gathers, lifts, tucks forelegs, arches the back (bascule), clearing an invisible low fence slightly ahead of its path; ears forward.
-• 2-3 s - landing into shallow water: realistic hoof sequence, sand/spray fans outward; ripples propagate.
-• 3-4 s - resumes canter for two strides past landing.
-Camera & look: tracking shot, chest-height, ~50 mm lens, gentle left-to-right pan with slight parallax; horizon level, no cuts; natural overcast lighting; crisp detail; cinematic but photorealistic.
-Continuity constraints: preserve exact coat colors, white blaze, and proportions of the lead horse; keep the two background horses cantering normally and not jumping; waves, wet sand reflections, and cloud field match the reference.
-Physics & realism: correct equine gait, weight shift, fetlock compression, mane and tail motion; believable water droplets and splash arcs; no warping or melting.
-Do NOT: show a visible fence or any added props; no extra legs/heads; no object duplication; no dramatic lighting changes; no camera shake; no slow-shutter ghosting.
-Ending frame: lead horse fully landed, mid-canter, suitable to loop with a subtle cross-fade.'''
+prompt = '''Create a cinematic video starting from the uploaded image of three horses running 
+along a beach. Gradually transform the scene: the calm ocean begins to split open, forming 
+a massive circular opening in the sea. Water cascades dramatically into the deep abyss below, 
+creating a waterfall effect inside the ocean. The sandy ground near the horses cracks open, 
+revealing the edge of the abyss. The horses leap gracefully over the crack in slow motion, 
+their manes flowing in the wind, droplets of water sparkling in the sunlight. The sky 
+remains partly cloudy with soft natural light, adding a sense of epic wonder and surreal 
+beauty to the scene. Maintain realistic physics and fluid motion for water and horses, with 
+high cinematic detail and smooth transitions.'''
 
 image_filename = "horses-1280x720.jpg"
 size = "1280x720"  # Video resolution - MUST match input image dimensions
@@ -132,7 +130,7 @@ try:
     with open(image_filename, "rb") as image_file:
         # Create video generation with image reference using OpenAI SDK
         video = client.videos.create(
-            model="sora-2",
+            model=model_name,
             prompt=prompt,
             size=size,
             seconds=seconds,

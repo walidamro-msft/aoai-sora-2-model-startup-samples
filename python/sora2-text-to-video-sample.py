@@ -28,8 +28,9 @@ load_dotenv()
 # Get configuration from environment variables
 api_key = os.getenv("AZURE_API_KEY")
 resource_name = os.getenv("AZURE_RESOURCE_NAME")
+model_name = os.getenv("AZURE_MODEL_NAME")
 
-if not api_key or not resource_name:
+if not api_key or not resource_name or not model_name:
     raise ValueError(
         "Missing required environment variables. "
         "Please copy .env.sample to .env and populate with your values."
@@ -63,7 +64,7 @@ print("-" * 60)
 
 try:
     video = client.videos.create(
-        model="sora-2",
+        model=model_name,
         prompt=prompt,
         size=size,
         seconds=seconds,

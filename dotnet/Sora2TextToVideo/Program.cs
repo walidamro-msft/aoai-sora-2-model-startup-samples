@@ -40,8 +40,9 @@ if (File.Exists(envPath))
 // Get configuration from environment variables
 var apiKey = Environment.GetEnvironmentVariable("AZURE_API_KEY");
 var resourceName = Environment.GetEnvironmentVariable("AZURE_RESOURCE_NAME");
+var modelName = Environment.GetEnvironmentVariable("AZURE_MODEL_NAME");
 
-if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(resourceName))
+if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(modelName))
 {
     throw new InvalidOperationException(
         "Missing required environment variables. " +
@@ -85,7 +86,7 @@ try
     
     var requestBody = new
     {
-        model = "sora-2",
+        model = modelName,
         prompt = prompt,
         size = size,
         seconds = seconds
